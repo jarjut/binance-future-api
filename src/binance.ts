@@ -17,6 +17,7 @@ const BinanceFactory: typeof BinanceLib =
 const client = BinanceFactory({
 	apiKey,
 	apiSecret,
+	recvWindow: 10000, // increase to 10s to tolerate local clock drift
 });
 
 export default client;

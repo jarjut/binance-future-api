@@ -82,10 +82,14 @@ app.get("/account/positions", async (req: Request, res: Response) => {
 			symbol: p.symbol,
 			entryPrice: p.entryPrice,
 			markPrice: p.markPrice,
-			amount: p.positionAmt,
-			unrealizedProfit: p.unRealizedProfit,
+			positionSide: p.positionSide,
+			leverage: p.leverage,
+			margin: `${p.positionInitialMargin} USDT`,
+			value: `${p.notional} USDT`,
+			quantity: p.positionAmt,
+			unrealizedProfit: p.unrealizedProfit,
 		}));
-		res.json(cleaner.cleanPositions(normalized));
+		res.json(normalized);
 	} catch (e) {
 		handleBinanceError(res, e);
 	}
