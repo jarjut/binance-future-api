@@ -4,7 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target bun",
+    "build": "bun build src/index.ts --outdir dist --target bun --external 'binance-api-node'",
     "start": "bun dist/index.js",
     "typecheck": "tsc -p tsconfig.json"
   },
