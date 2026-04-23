@@ -12,9 +12,7 @@ if (!apiKey || !apiSecret) {
 // Handle CJS/ESM interop: Bun's bundler may wrap the default export,
 // placing the factory function one level deeper at .default
 const BinanceFactory: typeof BinanceLib =
-	typeof BinanceLib === "function"
-		? BinanceLib
-		: (BinanceLib as any).default;
+	typeof BinanceLib === "function" ? BinanceLib : (BinanceLib as any).default;
 
 const client = BinanceFactory({
 	apiKey,
