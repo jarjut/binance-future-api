@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Coverage
+coverage/
+
+# Editors and IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+
+# Misc
+.cache/
+*.tgz
