@@ -1,14 +1,20 @@
 {
   "name": "binance-futures-api",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
+  "bin": {
+    "binance-futures-mcp": "src/mcp-server.ts"
+  },
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "build": "bun build src/index.ts --outdir dist --target bun --external 'binance-api-node'",
     "start": "bun dist/index.js",
-    "typecheck": "tsc -p tsconfig.json"
+    "mcp": "bun src/mcp-server.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "publish": "bun build src/mcp-server.ts --compile --outfile binance-futures-mcp"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "binance-api-node": "^0.13.9",
     "express": "^5.2.1"
   },
