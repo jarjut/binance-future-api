@@ -30,8 +30,12 @@ coverage/
 # OS files
 .DS_Store
 
+# Binaries
+@jarjut/binance-futures-mcp
+
 # Misc
 .cache/
 *.tgz
 
-.env
+# Agents
+.claude

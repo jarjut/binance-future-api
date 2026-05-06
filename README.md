@@ -1,4 +1,4 @@
-# binance-futures-api
+# @jarjut/binance-futures-mcp
 
 Minimal TypeScript project for experimenting with the Binance Futures API.
 
@@ -33,7 +33,7 @@ To use this server without cloning the repository, you can run it directly via `
   "mcpServers": {
     "binance-futures": {
       "command": "npx",
-      "args": ["-y", "binance-futures-mcp"],
+      "args": ["-y", "@jarjut/binance-futures-mcp"],
       "env": {
         "BINANCE_API_KEY": "your_api_key",
         "BINANCE_API_SECRET": "your_api_secret"
