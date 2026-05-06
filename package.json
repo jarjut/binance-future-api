@@ -19,6 +19,7 @@
     "build": "bun build src/index.ts src/mcp-server.ts --outdir dist --target node --external 'binance-api-node'",
     "start": "bun dist/index.js",
     "mcp": "bun src/mcp-server.ts",
+    "test:mcp": "npx @modelcontextprotocol/inspector bun src/mcp-server.ts",
     "typecheck": "tsc -p tsconfig.json",
     "publish": "npm publish"
   },
