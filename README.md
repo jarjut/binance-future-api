@@ -7,33 +7,81 @@ Minimal TypeScript project for experimenting with the Binance Futures API.
 Install dependencies:
 
 ```bash
-npm install
+bun install
 ```
 
-## Run
+## Local MCP Server
 
-This project is written in TypeScript. You can run it in two common ways:
+This project implements a Model Context Protocol (MCP) server that allows AI agents (like Claude Desktop) to interact with your Binance Futures account.
 
-- Run directly (requires `ts-node` or `tsx`):
+### Available Tools
+
+| Tool | Description | Arguments |
+| :--- | :--- | :--- |
+| `get_account_balance` | Get the current futures account balances for all assets. | None |
+| `get_account_pnl` | Get the total unrealized profit and total equity for the futures account. | None |
+| `get_account_positions` | Get all open futures positions with entry and mark prices. | None |
+| `get_open_orders` | Get all currently open futures orders. | None |
+| `get_trade_history` | Get the trade history for a specific trading pair. | `symbol` (e.g., "BTCUSDT") |
+
+### Installation via NPX (Recommended)
+
+To use this server without cloning the repository, you can run it directly via `npx` (assuming it is published to npm):
+
+```json
+{
+  "mcpServers": {
+    "binance-futures": {
+      "command": "npx",
+      "args": ["-y", "binance-futures-mcp"],
+      "env": {
+        "BINANCE_API_KEY": "your_api_key",
+        "BINANCE_API_SECRET": "your_api_secret"
+      }
+    }
+  }
+}
+```
+
+### Local Development Configuration
+
+If you have cloned the repo, add this to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "binance-futures": {
+      "command": "bun",
+      "args": ["run", "mcp"],
+      "env": {
+        "BINANCE_API_KEY": "your_api_key",
+        "BINANCE_API_SECRET": "your_api_secret"
+      }
+    }
+  }
+}
+```
+
+### Running Manually
+
+You can run the MCP server in stdio mode for testing:
 
 ```bash
-npx ts-node index.ts
-# or
-npx tsx index.ts
+bun run mcp
 ```
 
-- Compile then run:
+## REST API
 
-```bash
-npx tsc
-node dist/index.js
-```
+The project also includes a simple Express server for REST access.
+
+- Run in development mode: `bun run dev`
+- Build and start: `bun run build && bun run start`
 
 ## Tests
 
-There are test files under `tests/`. No test runner is configured in `package.json` — add a test runner (e.g., Jest or Vitest) and a `test` script to `package.json` if you want to run tests.
+There are test files under `tests/`. Use `bun test` to run them.
 
 ## Notes
 
-- Created `.gitignore` with common Node/TypeScript ignores.
-- Project has no `scripts` defined in `package.json`; you can add `start`, `dev`, and `test` scripts as needed.
+- This project uses **Bun** as the primary runtime and package manager.
+- Ensure `BINANCE_API_KEY` and `BINANCE_API_SECRET` are set in your environment.
