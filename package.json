@@ -1,17 +1,26 @@
 {
-  "name": "binance-futures-api",
-  "version": "1.0.0",
-  "main": "src/index.ts",
+  "name": "@jarjut/binance-futures-mcp",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jarjut/binance-future-api"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.2",
+  "main": "dist/index.js",
   "bin": {
-    "binance-futures-mcp": "src/mcp-server.ts"
+    "@jarjut/binance-futures-mcp": "dist/mcp-server.js"
   },
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target bun --external 'binance-api-node'",
+    "build": "bun build src/index.ts src/mcp-server.ts --outdir dist --target node --external 'binance-api-node'",
     "start": "bun dist/index.js",
     "mcp": "bun src/mcp-server.ts",
     "typecheck": "tsc -p tsconfig.json",
-    "publish": "bun build src/mcp-server.ts --compile --outfile binance-futures-mcp"
+    "publish": "npm publish"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

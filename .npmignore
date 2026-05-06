@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build and Output
+dist/
+build/
+out/
+*.tgz
+.cache/
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Environment and Secrets
+.env
+.env.*.local
+
+# Testing and Docs
+tests/
+docs/
+coverage/
+
+# IDEs and OS
+.vscode/
+.idea/
+.DS_Store
+
+# VCS and Tooling
+.git/
+.claude/
