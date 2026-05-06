@@ -4,8 +4,7 @@ import {
 	CallToolRequestSchema,
 	ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import client from "./binance";
-import * as cleaner from "./cleaner";
+import * as binanceService from "./binance-service";
 
 const server = new Server(
 	{
@@ -79,49 +78,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 	try {
 		switch (name) {
 			case "get_account_balance": {
-				const rawBalances = await client.futuresAccountBalance();
-				const assets = Array.isArray(rawBalances)
-					? rawBalances.map((b: any) => ({
-						asset: b.asset,
-						balance: b.walletBalance,
-						available: b.availableBalance,
-					}))
-					: [];
-				const cleaned = cleaner.cleanBalance(assets);
+				const cleaned = await binanceService.getAccountBalance();
 				return {
 					content: [{ type: "text", text: JSON.stringify(cleaned, null, 2) }],
 				};
 			}
 			case "get_account_pnl": {
-				const account = await client.futuresAccountInfo();
-				const cleaned = cleaner.cleanPnL({
-					totalUnrealizedProfit: account.totalUnrealizedProfit,
-					totalEquity: account.totalWalletBalance,
-				});
+				const cleaned = await binanceService.getAccountPnL();
 				return {
 					content: [{ type: "text", text: JSON.stringify(cleaned, null, 2) }],
 				};
 			}
 			case "get_account_positions": {
-				const account = await client.futuresAccountInfo();
-				const positions = Array.isArray(account.positions)
-					? account.positions.filter((p: any) => parseFloat(p.positionAmt) !== 0)
-					: [];
-				const normalized = positions.map((p: any) => ({
-					symbol: p.symbol,
-					entryPrice: p.entryPrice,
-					markPrice: p.markPrice,
-					amount: p.positionAmt,
-					unrealizedProfit: p.unRealizedProfit,
-				}));
-				const cleaned = cleaner.cleanPositions(normalized);
+				const cleaned = await binanceService.getAccountPositions();
 				return {
 					content: [{ type: "text", text: JSON.stringify(cleaned, null, 2) }],
 				};
 			}
 			case "get_open_orders": {
-				const orders = await client.futuresOpenOrders();
-				const cleaned = cleaner.cleanOpenOrders(orders);
+				const cleaned = await binanceService.getOpenOrders();
 				return {
 					content: [{ type: "text", text: JSON.stringify(cleaned, null, 2) }],
 				};
@@ -131,8 +106,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 				if (!symbol) {
 					throw new Error("Symbol is required for get_trade_history");
 				}
-				const trades = await client.futuresUserTrades({ symbol });
-				const cleaned = cleaner.cleanTradeHistory(trades);
+				const cleaned = await binanceService.getTradeHistory(symbol);
 				return {
 					content: [{ type: "text", text: JSON.stringify(cleaned, null, 2) }],
 				};
