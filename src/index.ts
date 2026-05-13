@@ -1,6 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import client from "./binance";
-import * as cleaner from "./cleaner";
+import * as binanceService from "./binance-service";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -44,15 +43,8 @@ app.use(checkAuth);
 
 app.get("/account/balance", async (req: Request, res: Response) => {
 	try {
-		const rawBalances = await client.futuresAccountBalance();
-		const assets = Array.isArray(rawBalances)
-			? rawBalances.map((b: any) => ({
-					asset: b.asset,
-					balance: b.walletBalance,
-					available: b.availableBalance,
-				}))
-			: [];
-		res.json(cleaner.cleanBalance(assets));
+		const balances = await binanceService.getAccountBalance();
+		res.json(balances);
 	} catch (e) {
 		handleBinanceError(res, e);
 	}
@@ -60,13 +52,8 @@ app.get("/account/balance", async (req: Request, res: Response) => {
 
 app.get("/account/pnl", async (req: Request, res: Response) => {
 	try {
-		const account = await client.futuresAccountInfo();
-		res.json(
-			cleaner.cleanPnL({
-				totalUnrealizedProfit: account.totalUnrealizedProfit,
-				totalEquity: account.totalWalletBalance,
-			}),
-		);
+		const pnl = await binanceService.getAccountPnL();
+		res.json(pnl);
 	} catch (e) {
 		handleBinanceError(res, e);
 	}
@@ -74,22 +61,8 @@ app.get("/account/pnl", async (req: Request, res: Response) => {
 
 app.get("/account/positions", async (req: Request, res: Response) => {
 	try {
-		const account = await client.futuresAccountInfo();
-		const positions = Array.isArray(account.positions)
-			? account.positions.filter((p: any) => parseFloat(p.positionAmt) !== 0)
-			: [];
-		const normalized = positions.map((p: any) => ({
-			symbol: p.symbol,
-			entryPrice: p.entryPrice,
-			markPrice: p.markPrice,
-			positionSide: p.positionSide,
-			leverage: p.leverage,
-			margin: `${p.positionInitialMargin} USDT`,
-			value: `${p.notional} USDT`,
-			quantity: p.positionAmt,
-			unrealizedProfit: p.unrealizedProfit,
-		}));
-		res.json(normalized);
+		const positions = await binanceService.getAccountPositions();
+		res.json(positions);
 	} catch (e) {
 		handleBinanceError(res, e);
 	}
@@ -97,8 +70,8 @@ app.get("/account/positions", async (req: Request, res: Response) => {
 
 app.get("/account/open-orders", async (req: Request, res: Response) => {
 	try {
-		const orders = await client.futuresOpenOrders();
-		res.json(cleaner.cleanOpenOrders(orders));
+		const orders = await binanceService.getOpenOrders();
+		res.json(orders);
 	} catch (e) {
 		handleBinanceError(res, e);
 	}
@@ -112,8 +85,8 @@ app.get("/account/trade-history", async (req: Request, res: Response) => {
 				error: "Query parameter 'symbol' is required and must be a string",
 			});
 		}
-		const trades = await client.futuresUserTrades({ symbol });
-		res.json(cleaner.cleanTradeHistory(trades));
+		const trades = await binanceService.getTradeHistory(symbol);
+		res.json(trades);
 	} catch (e) {
 		handleBinanceError(res, e);
 	}

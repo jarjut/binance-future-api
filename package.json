@@ -9,7 +9,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "bin": {
     "@jarjut/binance-futures-mcp": "dist/mcp-server.js"
@@ -19,11 +19,13 @@
     "build": "bun build src/index.ts src/mcp-server.ts --outdir dist --target node --external 'binance-api-node'",
     "start": "bun dist/index.js",
     "mcp": "bun src/mcp-server.ts",
+    "test:mcp": "npx @modelcontextprotocol/inspector bun src/mcp-server.ts",
     "typecheck": "tsc -p tsconfig.json",
     "publish": "npm publish"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3",
     "binance-api-node": "^0.13.9",
     "express": "^5.2.1"
   },

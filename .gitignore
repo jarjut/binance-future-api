@@ -39,3 +39,4 @@ coverage/
 
 # Agents
 .claude
+.claude/
