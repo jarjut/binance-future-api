@@ -43,6 +43,8 @@ To use this server without cloning the repository, you can run it directly via `
 }
 ```
 
+**Note:** You can use either `BINANCE_API_SECRET` or `BINANCE_PRIVATE_KEY`. At least one must be provided.
+
 ### Local Development Configuration
 
 If you have cloned the repo, add this to your `claude_desktop_config.json`:
@@ -61,6 +63,8 @@ If you have cloned the repo, add this to your `claude_desktop_config.json`:
   }
 }
 ```
+
+**Note:** You can use either `BINANCE_API_SECRET` or `BINANCE_PRIVATE_KEY`. At least one must be provided.
 
 ### Running Manually
 
@@ -84,4 +88,5 @@ There are test files under `tests/`. Use `bun test` to run them.
 ## Notes
 
 - This project uses **Bun** as the primary runtime and package manager.
-- Ensure `BINANCE_API_KEY` and `BINANCE_API_SECRET` are set in your environment.
+- `BINANCE_API_KEY` is always required.
+- Either `BINANCE_API_SECRET` or `BINANCE_PRIVATE_KEY` (or both) must be set in your environment.
