@@ -11,23 +11,6 @@ export interface CleanBalance {
 	available: string | undefined;
 }
 
-export interface RawPosition {
-	symbol: string;
-	entryPrice: string;
-	markPrice: string;
-	amount: string;
-	unrealizedProfit: string;
-	[key: string]: any;
-}
-
-export interface CleanPosition {
-	symbol: string | undefined;
-	entryPrice: string | undefined;
-	markPrice: string | undefined;
-	amount: string | undefined;
-	unrealizedProfit: string | undefined;
-}
-
 export interface RawOrder {
 	symbol: string;
 	price: string;
@@ -62,34 +45,12 @@ export interface CleanTrade {
 	time: number | undefined;
 }
 
-export interface RawPnL {
-	totalUnrealizedProfit: string;
-	totalEquity: string;
-	[key: string]: any;
-}
-
-export interface CleanPnL {
-	totalUnrealizedProfit: string | undefined;
-	totalEquity: string | undefined;
-}
-
 export const cleanBalance = (data: RawBalance[]): CleanBalance[] => {
 	if (!Array.isArray(data)) return [];
 	return data.map((i) => ({
 		asset: i.asset,
 		balance: i.balance,
 		available: i.available,
-	}));
-};
-
-export const cleanPositions = (data: RawPosition[]): CleanPosition[] => {
-	if (!Array.isArray(data)) return [];
-	return data.map((i) => ({
-		symbol: i.symbol,
-		entryPrice: i.entryPrice,
-		markPrice: i.markPrice,
-		amount: i.amount,
-		unrealizedProfit: i.unrealizedProfit,
 	}));
 };
 
@@ -113,12 +74,4 @@ export const cleanTradeHistory = (data: RawTrade[]): CleanTrade[] => {
 		side: i.side,
 		time: i.time,
 	}));
-};
-
-export const cleanPnL = (data: RawPnL): CleanPnL => {
-	if (!data) return { totalUnrealizedProfit: "0", totalEquity: "0" };
-	return {
-		totalUnrealizedProfit: data.totalUnrealizedProfit,
-		totalEquity: data.totalEquity,
-	};
 };
